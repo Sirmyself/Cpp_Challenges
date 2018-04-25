@@ -1,16 +1,17 @@
-#include <map>
-
 #include "stdafx.h"
+
 #include "FormulaParser.h"
 #include "Addition.h"
 
+#include <map>
+
 FormulaParser::FormulaParser()
 {
-	// Use the following syntax to add a new supported expression :
-	//     supportedOperators[CLASS_NAME::operatorChar] = new CLASS_NAME(0);
-	//
-	// Order them by priority here, parentheses' priority will allways be 
-	// on top of the following Expressions
+	/* Use the following syntax to add a new supported expression :
+	     supportedOperators[CLASS_NAME::operatorChar] = new CLASS_NAME(0);
+	
+	Order them by priority here (first is less important than next), 
+	parentheses will be managed automatically*/
 
 	supportedOperators[Addition::operatorChar] = new Addition();
 	//supportedOperators[Substraction::operatorChar] = new Substraction(0);
@@ -18,20 +19,32 @@ FormulaParser::FormulaParser()
 	//supportedOperators[Division::operatorChar] = new Division(0);
 }
 
-bool assertParenthesesValid(string formula)
+int FormulaParser::validateParentheses(string formula)
 {
 	int open = 0, close = 0;
+	bool lastWasOpen = false;
 	for (char c : formula)
 	{
-		if (c == '(') 
+		if (c == '(')
+		{
 			++open;
-		else if (c == ')') 
+			lastWasOpen = true;
+		}
+		else if (c == ')')
+		{
+			if (lastWasOpen) return -3; // empty perentheses
 			++close;
+		}
 
-		if (open < close) return false;
+		if (open < close) return -1; // parentheses not parsable
 	}
 
-	return open == close;
+	return open == close ? 0 : -1; // parentheses not parsable
+}
+
+int FormulaParser::validateOperatorsSupported(string formula)
+{
+	return 0;
 }
 
 /*
@@ -40,6 +53,7 @@ bool assertParenthesesValid(string formula)
 	the following codes correspond to the explanation on why the formula is invalid :
 		-1 : Parentheses are not parsable (verify correspondence of parentheses and their count)
 		-2 : Unsupported operator found
+		-3 : Empty parentheses
 		-999 : any other unsupported error
 
 	If the formula is valid, the function returns 0
@@ -47,13 +61,15 @@ bool assertParenthesesValid(string formula)
 */
 int FormulaParser::isValidFormula(string pFormula)
 {
-	if (pFormula.find("(") != string::npos && !assertParenthesesValid(pFormula))
+	int err = 0;
+
+	if (pFormula.find("(") != string::npos && !validateParentheses(pFormula))
 		return -1;
 
-	if (true)
+	if (validateOperatorsSupported(pFormula) == 0)
 		return 0;
 
-	return -999;
+	return err;
 }
 
 char FormulaParser::splitFormulas(string pMain, string* pSubFormula1, string* pSubFormula2)

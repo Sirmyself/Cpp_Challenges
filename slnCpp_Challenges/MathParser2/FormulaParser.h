@@ -15,6 +15,10 @@ private:
 	char splitFormulas(string pMain, string* pSubFormula1, string* pSubFormula2);
 	map<char, P_Expression> supportedOperators;
 
+
+	int validateParentheses(string formula);
+	int validateOperatorsSupported(string formula);
+
 public:
 	FormulaParser(void);
 
