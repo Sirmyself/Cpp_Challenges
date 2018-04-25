@@ -18,20 +18,41 @@ FormulaParser::FormulaParser()
 	//supportedOperators[Division::operatorChar] = new Division(0);
 }
 
+bool assertParenthesesValid(string formula)
+{
+	int open = 0, close = 0;
+	for (char c : formula)
+	{
+		if (c == '(') 
+			++open;
+		else if (c == ')') 
+			++close;
+
+		if (open < close) return false;
+	}
+
+	return open == close;
+}
+
 /*
 	this function returns a value lower than 0 when the string is an invalid formula.
 
 	the following codes correspond to the explanation on why the formula is invalid :
 		-1 : Parentheses are not parsable (verify correspondence of parentheses and their count)
 		-2 : Unsupported operator found
-
 		-999 : any other unsupported error
 
 	If the formula is valid, the function returns 0
 	If the formula can be translated to a double value, the function returns 77
 */
-int FormulaParser::isValidFormula(string formula)
+int FormulaParser::isValidFormula(string pFormula)
 {
+	if (pFormula.find("(") != string::npos && !assertParenthesesValid(pFormula))
+		return -1;
+
+	if (true)
+		return 0;
+
 	return -999;
 }
 
@@ -42,20 +63,20 @@ char FormulaParser::splitFormulas(string pMain, string* pSubFormula1, string* pS
 	return retVal;
 }
 
-P_Expression FormulaParser::parse(string formula)
+P_Expression FormulaParser::parse(string pFormula)
 {/*will return nullptr if the string is not a valid formula*/
-	int validCode = FormulaParser::isValidFormula(formula);
+	int validCode = FormulaParser::isValidFormula(pFormula);
 	if (validCode > 0)
 	{
 		string subFormula1, subFormula2 = "";
-		char oper = splitFormulas(formula, &subFormula1, &subFormula2);
+		char oper = splitFormulas(pFormula, &subFormula1, &subFormula2);
 		P_Expression newExpr = supportedOperators[oper]->createProto();
 		newExpr->initialize(validCode, parse(subFormula1), parse(subFormula2));
 		return newExpr;
 	}
 	else if (validCode == 0)
 	{
-		return new Expression(stod(formula, nullptr));
+		return new Expression(stod(pFormula, nullptr));
 	}
 	return nullptr;
 }

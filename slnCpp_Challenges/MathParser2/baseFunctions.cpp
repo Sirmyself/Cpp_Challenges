@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "baseFunctions.h"
 
+using namespace std;
+
+static char lineStr[] = "\n\n=================================\n";
+static map<int, string> errorList;
 
 char* s_line()
 {
@@ -24,7 +28,7 @@ void changeDefaultLine(char* newLine)
 
 bool askIsUserDone(void)
 {
-	return askIsUserDone((char*)"\nDo you want to continue?", 'n', 'y');
+	return askIsUserDone((char*)"\nDo you want to continue? ", 'n', 'y');
 }
 
 bool askIsUserDone(char* message, char isDone, char notDone)
@@ -46,4 +50,34 @@ bool askIsUserDone(char* message, char isDone, char notDone)
 	}
 
 	return answer == tolower(isDone);
+}
+
+void setErrorCode(int pIndex, string pMessage)
+{
+	errorList[pIndex] = pMessage;
+}
+
+void logError(int pErrorCode, ostream& pOut)
+{
+	logError(pErrorCode, pOut, "Press any key to continue");
+}
+
+void logError(int pErrorCode, ostream& pOut, string pContinueMessage)
+{
+	if (errorList.find(pErrorCode) != errorList.end() && pErrorCode != 0)
+	{
+		pOut << errorList[pErrorCode] << "\n";
+		pause(pContinueMessage);
+	}
+}
+
+void pause()
+{
+	cin.ignore();
+}
+
+void pause(string message)
+{
+	cout << message << "\n";
+	cin.ignore();
 }

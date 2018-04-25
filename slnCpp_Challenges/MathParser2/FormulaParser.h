@@ -18,9 +18,10 @@ private:
 public:
 	FormulaParser(void);
 
-	P_Expression parse(string formula);
-	int isValidFormula(string formula);
+	P_Expression parse(string pFormula);
+	int isValidFormula(string pFormula);
 
 	virtual ~FormulaParser();
 };
 
+typedef FormulaParser* P_FParser;

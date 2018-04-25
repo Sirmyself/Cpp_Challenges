@@ -33,9 +33,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="baseFunctions.h">
-      <Filter>Fichiers d%27en-tête\_Misc</Filter>
-    </ClInclude>
     <ClInclude Include="Addition.h">
       <Filter>Fichiers d%27en-tête\_ExpressionClasses</Filter>
     </ClInclude>
@@ -55,9 +52,6 @@
   <ItemGroup>
     <ClCompile Include="MathParser2.cpp">
       <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="baseFunctions.cpp">
-      <Filter>Fichiers sources\_Misc</Filter>
     </ClCompile>
     <ClCompile Include="Addition.cpp">
       <Filter>Fichiers sources\_ExpressionClasses</Filter>
