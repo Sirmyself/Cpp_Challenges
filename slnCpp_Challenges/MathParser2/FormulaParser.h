@@ -12,18 +12,19 @@ using namespace std;
 class FormulaParser
 {
 private:
-	char splitFormulas(string pMain, string* pSubFormula1, string* pSubFormula2);
+	char splitFormulas(const string pMain, string* pSubFormula1, string* pSubFormula2);
 	map<char, P_Expression> supportedOperators;
 
+	int validateParentheses(const string formula);
+	int validateOperatorsSupported(const string formula);
+	int validateFormula(const string pFormula);
 
-	int validateParentheses(string formula);
-	int validateOperatorsSupported(string formula);
+	P_Expression recurParse(string pFormula, int validCode);
 
 public:
 	FormulaParser(void);
 
-	P_Expression parse(string pFormula);
-	int isValidFormula(string pFormula);
+	int parse(const string pFormula, P_Expression& pTarget);
 
 	virtual ~FormulaParser();
 };
