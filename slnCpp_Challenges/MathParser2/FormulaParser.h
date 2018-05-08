@@ -15,6 +15,8 @@ private:
 	char splitFormulas(const string pMain, string* pSubFormula1, string* pSubFormula2);
 	map<char, P_Expression> supportedOperators;
 
+	bool isParsableToDouble(string pFormula);
+
 	int validateParentheses(const string formula);
 	int validateOperatorsSupported(const string formula);
 	int validateFormula(const string pFormula);

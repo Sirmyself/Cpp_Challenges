@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "Addition.h"
 
-Addition::Addition() : Expression() {}
-
 Addition::Addition(ExprPtr pExpr1, ExprPtr pExpr2) : Expression(pExpr1, pExpr2) {}
 
 double Addition::evaluate()
@@ -12,7 +10,7 @@ double Addition::evaluate()
 
 Addition::ExprPtr Addition::createProto()
 {
-	ExprPtr newExp = new Addition();
+	ExprPtr newExp = new Addition(nullptr, nullptr);
 	return newExp;
 }
 

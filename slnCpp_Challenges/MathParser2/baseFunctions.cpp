@@ -39,7 +39,7 @@ bool askIsUserDone(char* message, char isDone, char notDone)
 	while (answer != tolower(notDone) && answer != tolower(isDone))
 	{
 		line();
-		std::cout << message << "(" << notDone << "/" << isDone << ")";
+		std::cout << message << "(" << notDone << "/" << isDone << ") : ";
 		std::cin >> buffer;
 		if (strlen(buffer) > 1)
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -79,5 +79,6 @@ void pause()
 void pause(string message)
 {
 	cout << message << "\n";
+	cin.ignore();
 	cin.ignore();
 }

@@ -2,6 +2,7 @@
 
 #include "FormulaParser.h"
 #include "Addition.h"
+#include "Multiplication.h"
 
 #include <map>
 
@@ -13,10 +14,23 @@ FormulaParser::FormulaParser()
 	Order them by priority here (first is less important than next), 
 	parentheses will be managed automatically*/
 
-	supportedOperators[Addition::operatorChar] = new Addition();
-	//supportedOperators[Substraction::operatorChar] = new Substraction(0);
-	//supportedOperators[Multiplication::operatorChar] = new Multiplication(0);
-	//supportedOperators[Division::operatorChar] = new Division(0);
+	supportedOperators[Addition::operatorChar] = new Addition(nullptr, nullptr);
+	//supportedOperators[Substraction::operatorChar] = new Substraction(nullptr, nullptr);
+	supportedOperators[Multiplication::operatorChar] = new Multiplication(nullptr, nullptr);
+	//supportedOperators[Division::operatorChar] = new Division(nullptr, nullptr);
+}
+
+bool FormulaParser::isParsableToDouble(string pFormula)
+{
+	for (char c : pFormula)
+	{
+		if (!((c >= '0' && c <= '9') || c == '.'))
+		{
+			return false;
+		}
+	}
+
+	return true;
 }
 
 int FormulaParser::validateParentheses(const string pFormula)
@@ -28,7 +42,7 @@ int FormulaParser::validateParentheses(const string pFormula)
 	{
 		if (c == '(')
 		{
-			if (last == ')') return -4; //missing operator in perentheses
+			if (last == ')') return -4; //missing operator between perentheses
 			++open;
 		}
 		else if (c == ')')
@@ -38,6 +52,7 @@ int FormulaParser::validateParentheses(const string pFormula)
 		}
 
 		if (open < close) return -1; // parentheses not parsable
+		last = c;
 	}
 
 	return open == close ? 0 : -1; // parentheses not parsable
@@ -65,24 +80,14 @@ int FormulaParser::validateFormula(const string pFormula)
 {
 	int err = 0;
 
-	string formatted = pFormula;
-
-	//validating the parentheses opening parentheses all have a corresponding closing parenthesis
-	if (formatted.find("(") != string::npos && validateParentheses(formatted) < 0)
-		return -1;
-
-	//formatting the formula with every supported Expressions
-	for (map<char, P_Expression>::iterator iter = supportedOperators.begin(); iter != supportedOperators.end(); ++iter)
-	{
-		formatted = iter->second->formatFormula(formatted);
-	}
-
-	if (validateOperatorsSupported(formatted) == 0)
-		return 0;
-
-	if (true) // (isParsableToDouble(pFormula))
+	if (isParsableToDouble(pFormula))
 	{
 		return 77;
+	}
+
+	if (validateOperatorsSupported(pFormula) == 0)
+	{
+		return 0;
 	}
 
 	return err;
@@ -109,8 +114,8 @@ P_Expression FormulaParser::recurParse(string pFormula, int pValidCode)
 		P_Expression newExpr = FormulaParser::supportedOperators[oper]->createProto();
 		newExpr->initialize// ->
 		(
-			0, 
-			recurParse(subFormula1, validateFormula(subFormula1)), 
+			0,
+			recurParse(subFormula1, validateFormula(subFormula1)),
 			recurParse(subFormula2, validateFormula(subFormula2))
 		);
 
@@ -122,10 +127,25 @@ P_Expression FormulaParser::recurParse(string pFormula, int pValidCode)
 
 int FormulaParser::parse(const string pFormula, P_Expression& pTarget)
 {/*will return nullptr if the string is not a valid formula*/
-	int validCode = validateFormula(pFormula);
+
+	string formatted = pFormula;
+
+	//formatting the formula with every supported Expressions
+	for (map<char, P_Expression>::iterator iter = supportedOperators.begin(); iter != supportedOperators.end(); ++iter)
+	{
+		formatted = iter->second->formatFormula(formatted);
+	}
+
+	//validating the parentheses opening parentheses all have a corresponding closing parenthesis
+	int validation = 0;
+	if (formatted.find("(") != string::npos && (validation = validateParentheses(formatted)) < 0)
+		return validation;
+
+
+	int validCode = validateFormula(formatted);
 	if (validCode >= 0)
 	{
-		pTarget = recurParse(pFormula, validCode);
+		pTarget = recurParse(formatted, validCode);
 
 		return 0;
 	}

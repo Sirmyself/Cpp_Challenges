@@ -48,6 +48,9 @@
     <ClInclude Include="targetver.h">
       <Filter>Fichiers d%27en-tête\_Misc</Filter>
     </ClInclude>
+    <ClInclude Include="Multiplication.h">
+      <Filter>Fichiers d%27en-tête\_ExpressionClasses</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathParser2.cpp">
@@ -64,6 +67,9 @@
     </ClCompile>
     <ClCompile Include="FormulaParser.cpp">
       <Filter>Fichiers sources\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="Multiplication.cpp">
+      <Filter>Fichiers sources\_ExpressionClasses</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
