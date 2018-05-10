@@ -6,27 +6,24 @@
 #include "baseFunctions.h"
 #include "Expression.h"
 #include "Addition.h"
-
-using namespace std;
+#include "Multiplication.h"
 
 class FormulaParser
 {
 private:
-	char splitFormulas(const string pMain, string* pSubFormula1, string* pSubFormula2);
-	map<char, P_Expression> supportedOperators;
+	std::map<char, P_Expression> supportedOperators;
 
-	bool isParsableToDouble(string pFormula);
-
-	int validateParentheses(const string formula);
-	int validateOperatorsSupported(const string formula);
-	int validateFormula(const string pFormula);
-
-	P_Expression recurParse(string pFormula, int validCode);
+	char splitFormulas(const std::string pMain, std::string* pSubFormula1, std::string* pSubFormula2);
+	bool isParsableToDouble(std::string pFormula);
+	int validateParentheses(const std::string formula);
+	int validateOperatorsSupported(const std::string formula);
+	int validateFormula(const std::string pFormula);
+	P_Expression recurParse(std::string pFormula, int validCode);
 
 public:
 	FormulaParser(void);
 
-	int parse(const string pFormula, P_Expression& pTarget);
+	int parse(const std::string pFormula, P_Expression& pTarget);
 
 	virtual ~FormulaParser();
 };

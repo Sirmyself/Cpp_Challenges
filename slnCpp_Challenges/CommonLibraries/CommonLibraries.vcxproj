@@ -104,6 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeaderFile>stdafx_c.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -147,13 +148,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\MathParser2\baseFunctions.h" />
-    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="baseFunctions.h" />
+    <ClInclude Include="parsingUtils.h" />
+    <ClInclude Include="stdafx_c.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\MathParser2\baseFunctions.cpp" />
-    <ClCompile Include="stdafx.cpp">
+    <ClCompile Include="baseFunctions.cpp" />
+    <ClCompile Include="parsingUtils.cpp" />
+    <ClCompile Include="stdafx_c.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

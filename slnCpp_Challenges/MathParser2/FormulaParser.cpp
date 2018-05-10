@@ -1,10 +1,10 @@
 #include "stdafx.h"
 
 #include "FormulaParser.h"
-#include "Addition.h"
-#include "Multiplication.h"
 
 #include <map>
+
+using namespace std;
 
 FormulaParser::FormulaParser()
 {

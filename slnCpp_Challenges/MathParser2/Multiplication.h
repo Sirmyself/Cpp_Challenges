@@ -1,5 +1,6 @@
 #pragma once
 #include "Expression.h"
+
 class Multiplication :
 	public Expression
 {
