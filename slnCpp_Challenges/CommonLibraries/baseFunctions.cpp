@@ -60,14 +60,14 @@ namespace perso {
 
 	void logError(int pErrorCode, ostream& pOut)
 	{
-		logError(pErrorCode, pOut, "Press any key to continue");
+		logError(pErrorCode, pOut, "\n\nPress any key to continue");
 	}
 
 	void logError(int pErrorCode, ostream& pOut, string pContinueMessage)
 	{
 		if (errorList.find(pErrorCode) != errorList.end() && pErrorCode != 0)
 		{
-			pOut << errorList[pErrorCode] << "\n";
+			pOut << "\n" << errorList[pErrorCode] << "\n";
 			pause(pContinueMessage);
 		}
 	}

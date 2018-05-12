@@ -1,10 +1,19 @@
 #include "stdafx.h"
 #include "Multiplication.h"
 
+Multiplication::Multiplication()
+	: Expression(nullptr, nullptr)
+{
+}
 
 Multiplication::Multiplication(ExprPtr pExpr1, ExprPtr pExpr2)
 	: Expression(pExpr1, pExpr2)
 {
+}
+
+char Multiplication::charOper()
+{
+	return this->operatorChar;
 }
 
 double Multiplication::evaluate()

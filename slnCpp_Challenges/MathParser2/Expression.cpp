@@ -15,23 +15,9 @@ Expression::Expression(ExprPtr pExpr1, ExprPtr pExpr2)
 	: value_(0), expr1_(pExpr1), expr2_(pExpr2)
 {}
 
-size_t checkCorrespondingParenthesis(const string pFormula, unsigned int firstIndex)
+char Expression::charOper()
 {
-	unsigned int i = firstIndex;
-	unsigned int opening = 0, closing = 0;
-
-	while (i < pFormula.length())
-	{
-		if (pFormula[i] == '(') ++opening;
-		if (pFormula[i] == ')') ++closing;
-
-		if (opening == closing) 
-			return i;
-		else 
-			++i;
-	}
-
-	return -5; // error : corresponding parenthesis not found;
+	return this->operatorChar;
 }
 
 /*
@@ -50,16 +36,7 @@ size_t checkCorrespondingParenthesis(const string pFormula, unsigned int firstIn
 */
 string Expression::formatFormula(const string pFormula)
 {
-	string retVal = "";
-	if (pFormula[0] == '(' && checkCorrespondingParenthesis(pFormula, 0) == pFormula.length() - 1)
-	{
-		retVal = pFormula.substr(1, pFormula.length() - 2); // -2 for both parentheses
-	}
-	else
-	{
-		retVal = pFormula;
-	}
-	return retVal;
+	return removeUselessParentheses(pFormula);
 }
 
 double Expression::evaluate()

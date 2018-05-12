@@ -1,23 +1,22 @@
 #include "stdafx.h"
-
 #include "FormulaParser.h"
-
-#include <map>
 
 using namespace std;
 
 FormulaParser::FormulaParser()
 {
-	/* Use the following syntax to add a new supported expression :
-	     supportedOperators[CLASS_NAME::operatorChar] = new CLASS_NAME(0);
-	
-	Order them by priority here (first is less important than next), 
-	parentheses will be managed automatically*/
+	supportedExpressions = new vector<P_Expression>();
 
-	supportedOperators[Addition::operatorChar] = new Addition(nullptr, nullptr);
-	//supportedOperators[Substraction::operatorChar] = new Substraction(nullptr, nullptr);
-	supportedOperators[Multiplication::operatorChar] = new Multiplication(nullptr, nullptr);
-	//supportedOperators[Division::operatorChar] = new Division(nullptr, nullptr);
+	/*  Use the following syntax to add a new supported expression :
+	    supportedOperators->push_back(new CLASS_NAME());
+
+ 	    Order them by priority here (first is less important than next),
+        parentheses will be managed automatically*/
+
+	supportedExpressions->push_back(new Addition());
+	//supportedExpressions->push_back(new Substraction());
+	supportedExpressions->push_back(new Multiplication());
+	//supportedExpressions->push_back(new Division());
 }
 
 bool FormulaParser::isParsableToDouble(string pFormula)
@@ -42,12 +41,12 @@ int FormulaParser::validateParentheses(const string pFormula)
 	{
 		if (c == '(')
 		{
-			if (last == ')') return -4; //missing operator between perentheses
+			if (last == ')') return -4; //missing operator between parentheses
 			++open;
 		}
 		else if (c == ')')
 		{
-			if (last == '(') return -3; // empty perentheses
+			if (last == '(') return -3; // empty parentheses
 			++close;
 		}
 
@@ -93,33 +92,70 @@ int FormulaParser::validateFormula(const string pFormula)
 	return err;
 }
 
-char FormulaParser::splitFormulas(const string pMain, string* pSubFormula1, string* pSubFormula2)
+int FormulaParser::splitFormula(const string pMain, string* pSubFormula1, string* pSubFormula2, char* pOper)
 {
-	char retVal = '\0';
+	for (vector<P_Expression>::iterator it = supportedExpressions->begin(); it != supportedExpressions->end(); ++it)
+	{
+		for (int i = 0; i < pMain.length(); ++i)
+		{
+			if (pMain[i] == '(')
+			{
+				i = checkCorrespondingParenthesis(pMain, i);
+				if (i < 0) return i;
+			}
 
-	return retVal;
+			if (pMain[i] == (*it)->charOper())
+			{
+				*pOper = pMain[i];
+				*pSubFormula1 = pMain.substr(0, i);
+				*pSubFormula2 = pMain.substr(i + 1, pMain.length() - i - 1);
+				return i;
+			}
+		}
+	}
+	return -6;
 }
 
-P_Expression FormulaParser::recurParse(string pFormula, int pValidCode)
+P_Expression FormulaParser::operatorToExpressionProto(const char pOperator)
 {
-	if (pValidCode > 0)
+	for (vector<P_Expression>::iterator i = supportedExpressions->begin(); i != supportedExpressions->end(); ++i)
 	{
-		return new Expression(stod(pFormula));
+		if (pOperator == (*i)->charOper()) 
+		{
+			return *i;
+		}
 	}
-	else if (pValidCode == 0)
+	return nullptr;
+}
+
+P_Expression FormulaParser::recurParse(const string pFormula, int* pValidCode)
+{
+	string formatted = removeUselessParentheses(pFormula);
+
+	if (*pValidCode > 0)
+	{
+		return new Expression(stod(formatted));
+	}
+	else if (*pValidCode == 0)
 	{
 		string subFormula1 = "", subFormula2 = "";
-		char oper = splitFormulas(pFormula, &subFormula1, &subFormula2);
+		char oper;
+		*pValidCode = splitFormula(formatted, &subFormula1, &subFormula2, &oper);
 
-		P_Expression newExpr = FormulaParser::supportedOperators[oper]->createProto();
-		newExpr->initialize// ->
-		(
-			0,
-			recurParse(subFormula1, validateFormula(subFormula1)),
-			recurParse(subFormula2, validateFormula(subFormula2))
-		);
+		if (*pValidCode >= 0)
+		{
+			int valid1 = validateFormula(subFormula1);
+			int valid2 = validateFormula(subFormula2);
 
-		return newExpr;
+			P_Expression newExpr = operatorToExpressionProto(oper)->createProto();
+			newExpr->initialize// ->
+			(
+				0,
+				recurParse(subFormula1, &valid1),
+				recurParse(subFormula2, &valid2)
+			);
+			return newExpr;
+		}
 	}
 
 	return nullptr;
@@ -131,23 +167,23 @@ int FormulaParser::parse(const string pFormula, P_Expression& pTarget)
 	string formatted = pFormula;
 
 	//formatting the formula with every supported Expressions
-	for (map<char, P_Expression>::iterator iter = supportedOperators.begin(); iter != supportedOperators.end(); ++iter)
+	for (vector<P_Expression>::iterator i = supportedExpressions->begin(); i != supportedExpressions->end(); ++i)
 	{
-		formatted = iter->second->formatFormula(formatted);
+		formatted = (*i)->formatFormula(formatted);
 	}
 
 	//validating the parentheses opening parentheses all have a corresponding closing parenthesis
-	int validation = 0;
-	if (formatted.find("(") != string::npos && (validation = validateParentheses(formatted)) < 0)
+	int validation = validateParentheses(formatted);
+	if (formatted.find("(") != string::npos && validation < 0)
 		return validation;
 
 
 	int validCode = validateFormula(formatted);
 	if (validCode >= 0)
 	{
-		pTarget = recurParse(formatted, validCode);
+		pTarget = recurParse(formatted, &validCode);
 
-		return 0;
+		return validCode < 0 ? validCode : 0;
 	}
 
 	return validCode;

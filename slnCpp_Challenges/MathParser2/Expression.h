@@ -1,22 +1,27 @@
 #pragma once
+
+#include "parsingUtils.h"
+
 #include <string>
 
 class Expression
 {
-public : 
-	typedef Expression* ExprPtr;
-	const char operatorChar = '\0';
+private : 
+	static const char operatorChar = '\0';
 
 protected:
+	typedef Expression* ExprPtr;
+
 	Expression* expr1_;
 	Expression* expr2_;
 	double value_;
-	char operator_;
 
 public:
 	Expression();
 	Expression(double pValue);
 	Expression(ExprPtr pExpr1, ExprPtr pExpr2);
+
+	virtual char charOper();
 	virtual std::string formatFormula(const std::string pFormula);
 	virtual double evaluate();
 	virtual ExprPtr createProto();

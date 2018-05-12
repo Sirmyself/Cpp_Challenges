@@ -4,10 +4,14 @@
 class Multiplication :
 	public Expression
 {
-public:
+private :
 	static const char operatorChar = '*';
 
+public:
+	Multiplication();
 	Multiplication(ExprPtr pExpr1, ExprPtr pExpr2);
+
+	virtual char charOper();
 	double evaluate();
 	ExprPtr createProto();
 	

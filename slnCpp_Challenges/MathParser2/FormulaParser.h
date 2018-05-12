@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include <map>
+#include <vector>
 
 #include "baseFunctions.h"
 #include "Expression.h"
@@ -11,14 +11,17 @@
 class FormulaParser
 {
 private:
-	std::map<char, P_Expression> supportedOperators;
+	typedef std::vector<P_Expression>* ExpressionVector;
 
-	char splitFormulas(const std::string pMain, std::string* pSubFormula1, std::string* pSubFormula2);
-	bool isParsableToDouble(std::string pFormula);
+	ExpressionVector supportedExpressions;
+
+	int splitFormula(const std::string pMain, std::string* pSubFormula1, std::string* pSubFormula2, char* pOper);
+	bool isParsableToDouble(const std::string pFormula);
 	int validateParentheses(const std::string formula);
 	int validateOperatorsSupported(const std::string formula);
 	int validateFormula(const std::string pFormula);
-	P_Expression recurParse(std::string pFormula, int validCode);
+	P_Expression operatorToExpressionProto(const char pOperator);
+	P_Expression recurParse(const std::string pFormula, int* validCode);
 
 public:
 	FormulaParser(void);
