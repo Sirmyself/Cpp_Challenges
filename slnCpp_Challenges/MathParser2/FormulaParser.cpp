@@ -96,7 +96,7 @@ int FormulaParser::splitFormula(const string pMain, string* pSubFormula1, string
 {
 	for (vector<P_Expression>::iterator it = supportedExpressions->begin(); it != supportedExpressions->end(); ++it)
 	{
-		for (int i = 0; i < pMain.length(); ++i)
+		for (int i = pMain.length(); i >= 0; --i)
 		{
 			if (pMain[i] == '(')
 			{
@@ -107,8 +107,8 @@ int FormulaParser::splitFormula(const string pMain, string* pSubFormula1, string
 			if (pMain[i] == (*it)->charOper())
 			{
 				*pOper = pMain[i];
-				*pSubFormula1 = pMain.substr(0, i);
-				*pSubFormula2 = pMain.substr(i + 1, pMain.length() - i - 1);
+				*pSubFormula1 = removeUselessParentheses(pMain.substr(0, i));
+				*pSubFormula2 = removeUselessParentheses(pMain.substr(i + 1, pMain.length() - i - 1));
 				return i;
 			}
 		}
@@ -130,17 +130,15 @@ P_Expression FormulaParser::operatorToExpressionProto(const char pOperator)
 
 P_Expression FormulaParser::recurParse(const string pFormula, int* pValidCode)
 {
-	string formatted = removeUselessParentheses(pFormula);
-
 	if (*pValidCode > 0)
 	{
-		return new Expression(stod(formatted));
+		return new Expression(stod(pFormula));
 	}
 	else if (*pValidCode == 0)
 	{
 		string subFormula1 = "", subFormula2 = "";
 		char oper;
-		*pValidCode = splitFormula(formatted, &subFormula1, &subFormula2, &oper);
+		*pValidCode = splitFormula(pFormula, &subFormula1, &subFormula2, &oper);
 
 		if (*pValidCode >= 0)
 		{
@@ -163,8 +161,7 @@ P_Expression FormulaParser::recurParse(const string pFormula, int* pValidCode)
 
 int FormulaParser::parse(const string pFormula, P_Expression& pTarget)
 {/*will return nullptr if the string is not a valid formula*/
-
-	string formatted = pFormula;
+	string formatted = removeUselessParentheses(pFormula);
 
 	//formatting the formula with every supported Expressions
 	for (vector<P_Expression>::iterator i = supportedExpressions->begin(); i != supportedExpressions->end(); ++i)
