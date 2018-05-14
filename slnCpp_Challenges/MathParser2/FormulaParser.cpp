@@ -70,6 +70,8 @@ int FormulaParser::validateOperatorsSupported(const string formula)
 		-2 : Unsupported operator found
 		-3 : Empty parentheses
 		-4 : Missing operators between parentheses
+		-5 : A lone parenthesis was found
+		-10 : An error occured when parsing the parenthesis (given index did not point ot a parenthesis)
 		-999 : any other unsupported error
 
 	If the formula is valid, the function returns 0
@@ -98,7 +100,7 @@ int FormulaParser::splitFormula(const string pMain, string* pSubFormula1, string
 	{
 		for (int i = pMain.length(); i >= 0; --i)
 		{
-			if (pMain[i] == '(')
+			if (pMain[i] == ')')
 			{
 				i = checkCorrespondingParenthesis(pMain, i);
 				if (i < 0) return i;
