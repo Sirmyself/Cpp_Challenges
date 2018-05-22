@@ -74,13 +74,16 @@ namespace perso {
 
 	void pause()
 	{
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		cin.ignore();
 	}
 
 	void pause(string message)
 	{
 		cout << message << "\n";
-		cin.ignore();
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		cin.ignore();
 	}
 }
