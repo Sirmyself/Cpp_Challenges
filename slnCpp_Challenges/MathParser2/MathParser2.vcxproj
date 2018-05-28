@@ -153,6 +153,7 @@
     <ClInclude Include="Multiplication.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="FormulaParser.h" />
+    <ClInclude Include="Substraction.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
@@ -167,6 +168,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="FormulaParser.cpp" />
+    <ClCompile Include="Substraction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CommonLibraries\CommonLibraries.vcxproj">

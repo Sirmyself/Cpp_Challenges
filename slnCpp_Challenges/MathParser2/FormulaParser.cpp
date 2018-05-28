@@ -14,7 +14,7 @@ FormulaParser::FormulaParser()
         parentheses will be managed automatically*/
 
 	supportedExpressions->push_back(new Addition());
-	//supportedExpressions->push_back(new Substraction());
+	supportedExpressions->push_back(new Substraction());
 	supportedExpressions->push_back(new Multiplication());
 	//supportedExpressions->push_back(new Division());
 }

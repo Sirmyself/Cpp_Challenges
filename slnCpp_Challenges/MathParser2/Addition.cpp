@@ -7,7 +7,7 @@ Addition::Addition(ExprPtr pExpr1, ExprPtr pExpr2) : Expression(pExpr1, pExpr2) 
 
 char Addition::charOper()
 {
-	return this->operatorChar;
+	return Addition::operatorChar;
 }
 
 double Addition::evaluate()

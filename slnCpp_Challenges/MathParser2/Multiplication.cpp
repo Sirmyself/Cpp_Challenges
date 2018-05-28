@@ -13,7 +13,7 @@ Multiplication::Multiplication(ExprPtr pExpr1, ExprPtr pExpr2)
 
 char Multiplication::charOper()
 {
-	return this->operatorChar;
+	return Multiplication::operatorChar;
 }
 
 double Multiplication::evaluate()
@@ -23,7 +23,7 @@ double Multiplication::evaluate()
 
 Multiplication::ExprPtr Multiplication::createProto()
 {
-	ExprPtr newExp = new Multiplication(nullptr, nullptr);
+	ExprPtr newExp = new Multiplication();
 	return newExp;
 }
 

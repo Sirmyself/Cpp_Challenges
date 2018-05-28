@@ -36,7 +36,15 @@ char Expression::charOper()
 */
 string Expression::formatFormula(const string pFormula)
 {
-	return removeUselessParentheses(pFormula);
+	string retVal = pFormula;
+	for (int i = 0; i < retVal.length(); ++i)
+	{
+		if (retVal[i] == ' ')
+		{
+			retVal.erase(i, 1);
+		}
+	}
+	return removeUselessParentheses(retVal);
 }
 
 double Expression::evaluate()

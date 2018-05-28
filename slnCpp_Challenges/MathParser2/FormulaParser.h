@@ -6,6 +6,7 @@
 #include "baseFunctions.h"
 #include "Expression.h"
 #include "Addition.h"
+#include "Substraction.h"
 #include "Multiplication.h"
 
 class FormulaParser
