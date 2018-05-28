@@ -30,35 +30,33 @@ Substraction::ExprPtr Substraction::createProto()
 
 std::string Substraction::formatFormula(const std::string pFormula)
 {
-	bool lastIsNbr = false;
-	bool mustClose = false;
+	bool lastIsNbrOrClosing = false;
+	unsigned mustClose = 0;
 	std::string formatted = pFormula;
 
 	for (int i = 0 ; i < formatted.length(); ++i)
 	{
 		bool isNbr = (formatted[i] >= '0' && formatted[i] <= '9') || formatted[i] == '.';
-		if (formatted[i] == Substraction::operatorChar && !lastIsNbr)
+		if (formatted[i] == Substraction::operatorChar && !lastIsNbrOrClosing)
 		{
 			formatted.insert(i,"(0");
 			i = i + 2;
-			mustClose = true;
+			++mustClose;
 		}
-		else if (!isNbr && mustClose)
+		else if (!isNbr && (mustClose > 0))
 		{
-			mustClose = false;
+			--mustClose;
 			formatted.insert(i, ")");
 		}
 
-		lastIsNbr = isNbr;
+		lastIsNbrOrClosing = isNbr || formatted[i] == ')';
 	}
-
-	if (mustClose)
+	while (mustClose-- > 0)
 	{
 		formatted.insert(formatted.length(), ")");
-		mustClose = false;
 	}
 
-	return formatted;
+	return Expression::formatFormula(formatted);
 }
 
 Substraction::~Substraction()

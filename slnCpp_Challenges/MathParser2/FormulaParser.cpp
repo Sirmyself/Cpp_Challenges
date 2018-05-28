@@ -170,6 +170,7 @@ int FormulaParser::parse(const string pFormula, P_Expression& pTarget)
 	{
 		formatted = (*i)->formatFormula(formatted);
 	}
+	//formatted = Expression::formatFormula(formatted);
 
 	//validating the parentheses opening parentheses all have a corresponding closing parenthesis
 	int validation = validateParentheses(formatted);
