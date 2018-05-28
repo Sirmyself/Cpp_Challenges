@@ -21,10 +21,10 @@ public:
 	Expression(double pValue);
 	Expression(ExprPtr pExpr1, ExprPtr pExpr2);
 
-	virtual char charOper();
-	virtual std::string formatFormula(const std::string pFormula);
-	virtual double evaluate();
-	virtual ExprPtr createProto();
+	virtual char charOper();                                        //must override
+	virtual std::string formatFormula(const std::string pFormula);  //optionnal override
+	virtual double evaluate();                                      //must override
+	virtual ExprPtr createProto();                                  //must override
 	void initialize(double pValue, ExprPtr pExp1, ExprPtr pExp2);
 
 	virtual ~Expression();
