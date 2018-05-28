@@ -8,6 +8,8 @@
 #include "Addition.h"
 #include "Substraction.h"
 #include "Multiplication.h"
+#include "Division.h"
+#include "Power.h"
 
 class FormulaParser
 {

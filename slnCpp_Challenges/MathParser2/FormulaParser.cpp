@@ -16,7 +16,8 @@ FormulaParser::FormulaParser()
 	supportedExpressions->push_back(new Addition());
 	supportedExpressions->push_back(new Substraction());
 	supportedExpressions->push_back(new Multiplication());
-	//supportedExpressions->push_back(new Division());
+	supportedExpressions->push_back(new Division());
+	supportedExpressions->push_back(new Power());
 }
 
 bool FormulaParser::isParsableToDouble(string pFormula)

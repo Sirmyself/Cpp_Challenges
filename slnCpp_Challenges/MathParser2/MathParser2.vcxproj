@@ -149,8 +149,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Addition.h" />
+    <ClInclude Include="Division.h" />
     <ClInclude Include="Expression.h" />
     <ClInclude Include="Multiplication.h" />
+    <ClInclude Include="Power.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="FormulaParser.h" />
     <ClInclude Include="Substraction.h" />
@@ -158,9 +160,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Addition.cpp" />
+    <ClCompile Include="Division.cpp" />
     <ClCompile Include="Expression.cpp" />
     <ClCompile Include="MathParser2.cpp" />
     <ClCompile Include="Multiplication.cpp" />
+    <ClCompile Include="Power.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

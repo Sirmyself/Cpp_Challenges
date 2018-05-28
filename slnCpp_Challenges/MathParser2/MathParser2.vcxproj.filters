@@ -54,6 +54,12 @@
     <ClInclude Include="Substraction.h">
       <Filter>Fichiers d%27en-tête\_ExpressionClasses</Filter>
     </ClInclude>
+    <ClInclude Include="Division.h">
+      <Filter>Fichiers d%27en-tête\_ExpressionClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Power.h">
+      <Filter>Fichiers d%27en-tête\_ExpressionClasses</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathParser2.cpp">
@@ -75,6 +81,12 @@
       <Filter>Fichiers sources\_ExpressionClasses</Filter>
     </ClCompile>
     <ClCompile Include="Substraction.cpp">
+      <Filter>Fichiers sources\_ExpressionClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="Division.cpp">
+      <Filter>Fichiers sources\_ExpressionClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="Power.cpp">
       <Filter>Fichiers sources\_ExpressionClasses</Filter>
     </ClCompile>
   </ItemGroup>
