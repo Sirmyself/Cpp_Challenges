@@ -99,7 +99,7 @@ int FormulaParser::splitFormula(const string pMain, string* pSubFormula1, string
 {
 	for (vector<P_Expression>::iterator it = supportedExpressions->begin(); it != supportedExpressions->end(); ++it)
 	{
-		for (int i = pMain.length(); i >= 0; --i)
+		for (size_t i = pMain.length(); i >= 0; --i)
 		{
 			if (pMain[i] == ')')
 			{
