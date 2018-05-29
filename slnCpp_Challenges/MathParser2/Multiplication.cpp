@@ -34,11 +34,11 @@ std::string Multiplication::formatFormula(const std::string pFormula)
 	{
 		if (i > 0 && retVal[i] == '(' && (retVal[i - 1] == ')' || (retVal[i - 1] >= '0' && retVal[i - 1] <= '9')))
 		{ 
-			retVal.insert(i, "*");
+			retVal.insert(i, &Multiplication::operatorChar);
 		}
 	}
 
-	return retVal;
+	return Expression::formatFormula(retVal);
 }
 
 Multiplication::~Multiplication()

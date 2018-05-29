@@ -30,18 +30,22 @@ char Expression::charOper()
 	This function assumes the prentheses are valid in the formula. It
 	returns a formatted copy of the string received in the argument.
 	If "formatFormula" is not overridden, it will simply remove unnecessary outter 
-	parentheses and return the string as it is.
+	parentheses and spaces then return the string.
 
-	Use this function before any form of validation on the formula string (except for parentheses validation)
+	Make the overiding functions call this one to ensure it is at least 
+	called once after any new formatting
 */
 string Expression::formatFormula(const string pFormula)
 {
 	string retVal = pFormula;
-	for (int i = 0; i < retVal.length(); ++i)
+	if (retVal.find(' ') != string::npos)
 	{
-		if (retVal[i] == ' ')
+		for (int i = 0; i < retVal.length(); ++i)
 		{
-			retVal.erase(i, 1);
+			if (retVal[i] == ' ')
+			{
+				retVal.erase(i, 1);
+			}
 		}
 	}
 	return removeUselessParentheses(retVal);

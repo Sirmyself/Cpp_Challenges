@@ -99,7 +99,7 @@ int FormulaParser::splitFormula(const string pMain, string* pSubFormula1, string
 {
 	for (vector<P_Expression>::iterator it = supportedExpressions->begin(); it != supportedExpressions->end(); ++it)
 	{
-		for (size_t i = pMain.length(); i >= 0; --i)
+		for (int i = pMain.length(); i >= 0; --i)
 		{
 			if (pMain[i] == ')')
 			{
@@ -162,22 +162,22 @@ P_Expression FormulaParser::recurParse(const string pFormula, int* pValidCode)
 	return nullptr;
 }
 
+/*will return nullptr if the string is not a valid formula*/
 int FormulaParser::parse(const string pFormula, P_Expression& pTarget)
-{/*will return nullptr if the string is not a valid formula*/
+{
 	string formatted = removeUselessParentheses(pFormula);
 
 	//formatting the formula with every supported Expressions
-	for (vector<P_Expression>::iterator i = supportedExpressions->begin(); i != supportedExpressions->end(); ++i)
+	for (vector<P_Expression>::iterator it = supportedExpressions->begin(); it != supportedExpressions->end(); ++it)
 	{
-		formatted = (*i)->formatFormula(formatted);
+		formatted = (*it)->formatFormula(formatted);
 	}
-	//formatted = Expression::formatFormula(formatted);
 
 	//validating the parentheses opening parentheses all have a corresponding closing parenthesis
+	//after the expressions have had a chance to format the formula
 	int validation = validateParentheses(formatted);
 	if (formatted.find("(") != string::npos && validation < 0)
 		return validation;
-
 
 	int validCode = validateFormula(formatted);
 	if (validCode >= 0)

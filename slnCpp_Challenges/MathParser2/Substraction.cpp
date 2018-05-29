@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Substraction.h"
 
+//using namespace std;
 
 Substraction::Substraction()
 	: Expression(nullptr, nullptr)
@@ -33,27 +34,31 @@ std::string Substraction::formatFormula(const std::string pFormula)
 	bool lastIsNbrOrClosing = false;
 	unsigned mustClose = 0;
 	std::string formatted = pFormula;
-
-	for (int i = 0 ; i < formatted.length(); ++i)
+	
+	if (formatted.find(Substraction::operatorChar) != std::string::npos)
 	{
-		bool isNbr = (formatted[i] >= '0' && formatted[i] <= '9') || formatted[i] == '.';
-		if (formatted[i] == Substraction::operatorChar && !lastIsNbrOrClosing)
+		for (int i = 0; i < formatted.length(); ++i)
 		{
-			formatted.insert(i,"(0");
-			i = i + 2;
-			++mustClose;
-		}
-		else if (!isNbr && (mustClose > 0))
-		{
-			--mustClose;
-			formatted.insert(i, ")");
-		}
+			bool isNbr = (formatted[i] >= '0' && formatted[i] <= '9') || formatted[i] == '.';
+			if (formatted[i] == Substraction::operatorChar && !lastIsNbrOrClosing)
+			{
+				formatted.insert(i, "(0");
+				i = i + 2;
+				++mustClose;
+			}
+			else if (!isNbr && (mustClose > 0))
+			{
+				--mustClose;
+				formatted.insert(i, ")");
+			}
 
-		lastIsNbrOrClosing = isNbr || formatted[i] == ')';
-	}
-	while (mustClose-- > 0)
-	{
-		formatted.insert(formatted.length(), ")");
+			lastIsNbrOrClosing = isNbr || formatted[i] == ')';
+		}
+		while (mustClose-- > 0)
+		{
+			formatted.insert(formatted.length(), ")");
+
+		}
 	}
 
 	return Expression::formatFormula(formatted);
