@@ -73,6 +73,7 @@ int FormulaParser::validateOperatorsSupported(const string formula)
 		-4 : Missing operators between parentheses
 		-5 : A lone parenthesis was found
 		-10 : An error occured when parsing the parenthesis (given index did not point ot a parenthesis)
+		-11 : Empty formula
 		-999 : any other unsupported error
 
 	If the formula is valid, the function returns 0
@@ -80,16 +81,23 @@ int FormulaParser::validateOperatorsSupported(const string formula)
 */
 int FormulaParser::validateFormula(const string pFormula)
 {
-	int err = 0;
+	int err = validateParentheses(pFormula);
 
-	if (isParsableToDouble(pFormula))
+	if (err < 0)
 	{
-		return 77;
+		return err;
 	}
-
-	if (validateOperatorsSupported(pFormula) == 0)
+	else if (pFormula.length() == 0)
 	{
-		return 0;
+		err = -11;
+	}
+	else if (isParsableToDouble(pFormula))
+	{
+		err = 77;
+	}
+	else if (validateOperatorsSupported(pFormula) == 0)
+	{
+		err = 0;
 	}
 
 	return err;
@@ -165,7 +173,7 @@ P_Expression FormulaParser::recurParse(const string pFormula, int* pValidCode)
 /*will return nullptr if the string is not a valid formula*/
 int FormulaParser::parse(const string pFormula, P_Expression& pTarget)
 {
-	string formatted = removeUselessParentheses(pFormula);
+	string formatted = pFormula;
 
 	//formatting the formula with every supported Expressions
 	for (vector<P_Expression>::iterator it = supportedExpressions->begin(); it != supportedExpressions->end(); ++it)
@@ -175,9 +183,9 @@ int FormulaParser::parse(const string pFormula, P_Expression& pTarget)
 
 	//validating the parentheses opening parentheses all have a corresponding closing parenthesis
 	//after the expressions have had a chance to format the formula
-	int validation = validateParentheses(formatted);
-	if (formatted.find("(") != string::npos && validation < 0)
-		return validation;
+//	int validation = validateParentheses(formatted);
+//	if (formatted.find("(") != string::npos && validation < 0)
+//		return validation;
 
 	int validCode = validateFormula(formatted);
 	if (validCode >= 0)
