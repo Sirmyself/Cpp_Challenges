@@ -55,11 +55,26 @@ int FormulaParser::validateParentheses(const string pFormula)
 		last = c;
 	}
 
-	return open == close ? 0 : -1; // parentheses not parsable
+	return open == close ? 0 : -5; // A lone parenthesis was found
 }
 
 int FormulaParser::validateOperatorsSupported(const string formula)
 {
+	for (char c : formula)
+	{
+		if (!(c == ' ' || c == '(' || c == ')' || (c >= '0' && c <= '9') || c == '.'))
+		{
+			bool supported = false;
+			for (vector<P_Expression>::iterator ei = supportedExpressions->begin(); ei != supportedExpressions->end(); ++ei)
+			{
+				supported = supported || (*ei)->charOper() == c;
+			}
+			if (!supported)
+			{
+				return -2;
+			}
+		}
+	}
 	return 0;
 }
 
@@ -83,11 +98,7 @@ int FormulaParser::validateFormula(const string pFormula)
 {
 	int err = validateParentheses(pFormula);
 
-	if (err < 0)
-	{
-		return err;
-	}
-	else if (pFormula.length() == 0)
+	if (pFormula.length() == 0)
 	{
 		err = -11;
 	}
@@ -95,10 +106,7 @@ int FormulaParser::validateFormula(const string pFormula)
 	{
 		err = 77;
 	}
-	else if (validateOperatorsSupported(pFormula) == 0)
-	{
-		err = 0;
-	}
+	err = validateOperatorsSupported(pFormula); //last validation
 
 	return err;
 }
