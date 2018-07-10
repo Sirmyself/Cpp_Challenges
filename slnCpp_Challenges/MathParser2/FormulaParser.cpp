@@ -106,8 +106,10 @@ int FormulaParser::validateFormula(const string pFormula)
 	{
 		err = 77;
 	}
-	err = validateOperatorsSupported(pFormula); //last validation
-
+	else if (err == 0)
+	{
+		err = validateOperatorsSupported(pFormula); //last validation
+	}
 	return err;
 }
 
