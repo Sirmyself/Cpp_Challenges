@@ -2,5 +2,5 @@
 
 #include <string>
 
-size_t checkCorrespondingParenthesis(const std::string pFormula, unsigned int firstIndex);
+int checkCorrespondingParenthesis(const std::string pFormula, int firstIndex);
 std::string removeUselessParentheses(const std::string pString);

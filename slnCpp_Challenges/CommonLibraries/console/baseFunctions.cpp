@@ -1,5 +1,9 @@
-#include "stdafx_c.h"
 #include "baseFunctions.h"
+
+#include <cctype>
+#include <cstdlib>
+#include <cstring>
+#include <limits>
 
 using namespace std;
 
